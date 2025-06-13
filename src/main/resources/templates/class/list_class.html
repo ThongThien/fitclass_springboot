@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	    
+	<style>
+		.text-gradient {
+		    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+		    background-clip: text;
+		    -webkit-background-clip: text;
+		    -webkit-text-fill-color: transparent;
+		    font-size: 2.2rem; 
+		    font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+		  <div class="container d-flex align-items-center justify-content-between flex-wrap py-3">
+		    <div class="header_logo d-flex align-items-center">
+		      <i class="fas fa-dumbbell fa-2x me-2 text-danger"></i>
+		      <h1 class="m-0 text-gradient">T - Fitclass - Manager</h1>
+		    </div>
+		
+		    <div class="text-end">
+		      <h4 style="margin-bottom: 0; font-weight: bold">
+		        Student, Class & Trainer Management System
+		      </h4>
+		      <p style="font-size: 1rem; color: #6c757d">
+		        Fitness Pro Center - Nha Trang, Khanh Hoa
+		      </p>
+		    </div>
+		  </div>
+		</header>
+	</div>	   
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/students">List Student</a>
+        <a class="navbar-brand" href="/classes">List Class</a>    
+        <a class="nav-link" href="/trainers">List Trainer</a>              
+        <a class="nav-link" href="/classregister">Class Registration</a>      
+        <a class="nav-link" href="/statistics">Statistics</a>
+    </nav>
+
+	<div class="container-fluid">   
+		<div class="d-flex justify-content-between align-items-center mb-3"> 
+		    <h2 class="text-center mb-4" style="font-weight: 700; font-size: 2rem; border-bottom: 4px solid #28a745; display: inline-block; padding-bottom: 5px;">List of Classes</h2>
+		    <br>
+		    <a href="/classes/new" class="btn btn-primary mb-3">Add New Class</a> 
+		 </div>
+		<form th:action="@{/classes}" method="get" class="d-flex mb-3" role="search">
+		  <input 
+		    class="form-control me-2" 
+		    type="search" 
+		    name="keyword" 
+		    placeholder="search by name" 
+		    aria-label="Search"
+		    th:value="${keyword}"
+		  />
+		  <button class="btn btn-outline-success" type="submit">Search</button>
+		  <a th:href="@{/classes}" class="btn btn-secondary ms-2">Reset</a>
+		</form>
+
+	    <table class="table table-bordered table-striped">
+	        <thead class="thead-dark">
+	            <tr>
+	                <th>ID</th>
+	                <th>Class Name</th>
+	                <th>Description</th> 
+	                <th>Schedule</th>
+	                <th>Max Students</th> 
+	                <th>Trainer</th> 
+	                <th>Actions</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr th:each="class : ${classes}">
+	                <td th:text="${class.id}"></td>
+	                <td th:text="${class.className}"></td>
+	                <td th:text="${class.description}"></td>
+	                <td th:text="${class.schedule}"></td>
+	                <td th:text="${class.maxStudents}"></td> 
+	                <td th:text="${class.trainer.name}"></td> 
+	                <td>
+	                    <a th:href="@{/classes/edit/{id}(id=${class.id})}" class="btn btn-info btn-sm">Edit</a>
+	                    <a th:href="@{/classes/delete/{id}(id=${class.id})}" 
+						   class="btn btn-danger btn-sm"
+						   >
+						   Delete
+						</a>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+
+    <footer class="footer mt-4 bg-light py-3">
+       <div class="container text-center">
+           <p>&copy; NGUYENTHONGTHIEN-K64</p>
+       </div>
+    </footer>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

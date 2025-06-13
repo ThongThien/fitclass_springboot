@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Class Registrations</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	    
+	<style>
+		.text-gradient {
+		    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+		    background-clip: text;
+		    -webkit-background-clip: text;
+		    -webkit-text-fill-color: transparent;
+		    font-size: 2.2rem; 
+		    font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+		  <div class="container d-flex align-items-center justify-content-between flex-wrap py-3">
+		    <div class="header_logo d-flex align-items-center">
+		      <i class="fas fa-dumbbell fa-2x me-2 text-danger"></i>
+		      <h1 class="m-0 text-gradient">T - Fitclass - Manager</h1>
+		    </div>
+		
+		    <div class="text-end">
+		      <h4 style="margin-bottom: 0; font-weight: bold">
+		        Student, Class & Trainer Management System
+		      </h4>
+		      <p style="font-size: 1rem; color: #6c757d">
+		        Fitness Pro Center - Nha Trang, Khanh Hoa
+		      </p>
+		    </div>
+		  </div>
+		</header>
+	</div>	
+	
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	    <a class="nav-link" href="/">Home</a>
+	    <a class="nav-link" href="/students">List Student</a>
+	    <a class="nav-link" href="/classes">List Class</a>
+	    <a class="nav-link" href="/trainers">List Trainer</a>
+	    <a class="navbar-brand" href="/classregister">Class Registration</a>
+	    <a class="nav-link" href="/statistics">Statistics</a>
+	</nav>
+	<div class="container-fluid">
+		<div class="d-flex justify-content-between align-items-center mb-3"> 
+		    <h2 class="text-center mb-4" style="font-weight: 700; font-size: 2rem; border-bottom: 4px solid #28a745; display: inline-block; padding-bottom: 5px;">List of Class Registrations</h2>
+		    <br>
+		    <a href="/classregister/add" class="btn btn-primary mb-3">Add Registration</a>
+	    </div>
+	        <!-- Form tìm kiếm -->
+		<form th:action="@{/classregister}" method="get" class="d-flex mb-3" role="search">
+		  <input 
+		    class="form-control me-2" 
+		    type="search" 
+		    name="keyword" 
+		    placeholder="search by name" 
+		    aria-label="Search"
+		    th:value="${keyword}"
+		  />
+		  <button class="btn btn-outline-success" type="submit">Search</button>
+		  <a th:href="@{/classregister}" class="btn btn-secondary ms-2">Reset</a>
+		</form>
+		<table class="table table-bordered table-striped">
+		    <thead class="thead-dark">
+		    <tr>
+		        <th>ID</th>
+		        <th>Student Name</th>
+		        <th>Class Name</th>
+		        <th>Registration Date</th>
+		        <th>Expired Date</th>
+		        <th>Action</th>
+		    </tr>
+		    </thead>
+		    <tbody>
+		    <tr th:each="reg : ${registrations}">
+		        <td th:text="${reg.id}"></td>
+		        <td th:text="${reg.student.name}"></td>
+		        <td th:text="${reg.aClass.className}"></td>
+		        <td th:text="${#dates.format(reg.registrationDate, 'dd/MM/yyyy HH:mm')}"></td>
+		        <td th:text="${reg.expiredDate != null ? #dates.format(reg.expiredDate, 'dd/MM/yyyy') : 'Chưa có'}"></td>
+		        <td>
+		            <!-- Nút xóa -->
+		            <a th:href="@{'/classregister/delete/' + ${reg.student.id} + '/' + ${reg.aClass.id}}"
+		               onclick="return confirm('Are you sure you want to delete this registration?')"
+		               class="btn btn-danger btn-sm">
+		                Delete
+		            </a>
+		
+		            <!-- Form gia hạn -->
+		            <form th:action="@{'/classregister/extend/' + ${reg.id}}" method="post" style="display: inline-flex; gap: 5px;">
+		                <select name="extend_type" class="form-select form-select-sm w-auto">
+		                    <option value="15d">+15 day</option>
+		                    <option value="1m">+1 month</option>
+		                    <option value="2m">+2 month</option>
+		                </select>
+		                <button type="submit" class="btn btn-primary btn-sm">Extend</button>
+		            </form>
+		        </td>
+		    </tr>
+		    </tbody>
+		</table>
+	</div>
+	<footer class="footer mt-4 bg-light py-3">
+	   <div class="container text-center">
+	       <p>&copy; NGUYENTHONGTHIEN-K64</p>
+	   </div>
+	</footer>
+	
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
